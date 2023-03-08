@@ -1,0 +1,16 @@
+﻿<Window x:Class="MVP_Tema_1.CreateUserWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MVP_Tema_1"
+        mc:Ignorable="d"
+        Title="CreateUserWindow" Height="700" Width="600">
+    <Grid>
+        <Image  x:Name="ProfilePicture" HorizontalAlignment="Left" Height="200" Margin="200,100,0,0" VerticalAlignment="Top" Width="200" Stretch="UniformToFill"/>
+        <Button x:Name="PreviousButton" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="100,350,0,0" VerticalAlignment="Top" Height="65" Width="100" Click="PreviousButton_Click"/>
+        <Button x:Name="NextButton" Content=">>" HorizontalAlignment="Left" Margin="400,350,0,0" VerticalAlignment="Top" Height="65" Width="100" Click="NextButton_Click"/>
+        <TextBox x:Name="UserNameBox" HorizontalAlignment="Center" Margin="0,480,0,0" TextWrapping="Wrap" Text="Enter username" VerticalAlignment="Top" Width="300" Height="30" FontSize="20" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
+        <Button x:Name="CreateAcount" Content="Create Account" HorizontalAlignment="Center" Margin="0,560,0,0" VerticalAlignment="Top" Height="50" Width="200" Click="CreateAcount_Click"/>
+    </Grid>
+</Window>

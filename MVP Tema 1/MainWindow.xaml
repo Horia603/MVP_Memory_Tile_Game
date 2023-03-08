@@ -7,11 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000">
     <Grid>
-        <Image  x:Name="ProfilePicture" HorizontalAlignment="Left" Height="200" Margin="610,100,0,0" VerticalAlignment="Top" Width="200" Stretch="UniformToFill" Source="/Resources/user.png"/>
-        <Button x:Name="PreviousButton" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="530,380,0,0" VerticalAlignment="Top" Height="65" Width="85" Click="PreviousButton_Click"/>
-        <Button x:Name="NextButton" Content=">>" HorizontalAlignment="Left" Margin="800,380,0,0" VerticalAlignment="Top" Height="65" Width="85" Click="NextButton_Click"/>
-        <Button x:Name="PlayButton"  Content="Play" HorizontalAlignment="Left" Margin="79,137,0,0" VerticalAlignment="Top" Height="85" Width="183"/>
-        <Button x:Name="NewUserButton" Content="New User" HorizontalAlignment="Left" Margin="79,292,0,0" VerticalAlignment="Top" Height="85" Width="183"/>
-        <TextBox x:Name="UserNameTextBox"  HorizontalAlignment="Left" Margin="615,320,0,0" TextWrapping="Wrap" Text="Enter your username" TextAlignment="Center" VerticalAlignment="Top" Width="185" Height="36" GotFocus="UserNameTextBox_GotFocus" LostFocus="UserNameTextBox_LostFocus"/>
+        <Image  x:Name="ProfilePicture" HorizontalAlignment="Left" Height="200" Margin="610,100,0,0" VerticalAlignment="Top" Width="200" Stretch="UniformToFill"/>
+        <Button x:Name="NewGameButton"  Content="New Game" HorizontalAlignment="Left" Margin="80,100,0,0" VerticalAlignment="Top" Height="85" Width="180"/>
+        <Button x:Name="LoadGameButton"  Content="Load Game" HorizontalAlignment="Left" Margin="80,250,0,0" VerticalAlignment="Top" Height="85" Width="180"/>
+        <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Left" Margin="80,400,0,0" VerticalAlignment="Top" Height="85" Width="180"/>
+        <ComboBox x:Name="UserSelector" HorizontalAlignment="Left" Margin="610,360,0,0" VerticalAlignment="Top" Width="200" Height="35" FontSize="20" Text="Select User" IsEditable="True" MaxDropDownHeight="150" SelectionChanged="UserName_SelectionChanged"/>
     </Grid>
 </Window>
