@@ -1,7 +1,11 @@
-﻿
+﻿using System;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+
 namespace MVP_Tema_1
 {
-    internal class User
+    [Serializable()]
+    internal class User : ISerializable
     {
         private string username;
         private string photo;
@@ -23,6 +27,18 @@ namespace MVP_Tema_1
         {
             get { return photo; }
             set { photo = value; }
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("username", username);
+            info.AddValue("photo", photo);
+        }
+
+        public User(SerializationInfo info, StreamingContext context)
+        {
+            UserName = (string)info.GetValue("username", typeof(string));
+            Photo = (string)info.GetValue("photo", typeof(string));
         }
     }
 }
