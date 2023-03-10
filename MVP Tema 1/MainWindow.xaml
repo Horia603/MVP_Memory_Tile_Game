@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MVP_Tema_1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1000">
+        Title="MainWindow" Height="650" Width="1000" ResizeMode="NoResize">
     <Grid>
-        <Image  x:Name="ProfilePicture" HorizontalAlignment="Left" Height="200" Margin="610,100,0,0" VerticalAlignment="Top" Width="200" Stretch="UniformToFill"/>
-        <Button x:Name="NewGameButton"  Content="New Game" HorizontalAlignment="Left" Margin="80,100,0,0" VerticalAlignment="Top" Height="85" Width="180"/>
-        <Button x:Name="LoadGameButton"  Content="Load Game" HorizontalAlignment="Left" Margin="80,250,0,0" VerticalAlignment="Top" Height="85" Width="180"/>
-        <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Left" Margin="80,400,0,0" VerticalAlignment="Top" Height="85" Width="180"/>
-        <ComboBox x:Name="UserSelector" HorizontalAlignment="Left" Margin="610,360,0,0" VerticalAlignment="Top" Width="200" Height="35" FontSize="20" Text="Select User" IsEditable="True" MaxDropDownHeight="150" SelectionChanged="UserName_SelectionChanged"/>
+        <Image  x:Name="ProfilePicture" HorizontalAlignment="Left" Height="200" Margin="610,130,0,0" VerticalAlignment="Top" Width="200" Stretch="UniformToFill"/>
+        <Button x:Name="NewGameButton"  Content="New Game" HorizontalAlignment="Left" Margin="120,110,0,0" VerticalAlignment="Top" Height="100" Width="180" FontSize="30"/>
+        <Button x:Name="LoadGameButton"  Content="Load Game" HorizontalAlignment="Left" Margin="120,280,0,0" VerticalAlignment="Top" Height="100" Width="180" FontSize="30"/>
+        <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Left" Margin="120,450,0,0" VerticalAlignment="Top" Height="100" Width="180" FontSize="30"/>
+        <Button x:Name="DeleteUserButton" Content="Delete User" HorizontalAlignment="Left" Margin="610,480,0,0" VerticalAlignment="Top" Height="45" Width="200" FontSize="20" Click="DeleteUserButton_Click"/>
+        <ComboBox x:Name="UserSelector" HorizontalAlignment="Left" Margin="610,390,0,0" VerticalAlignment="Top" Width="200" Height="35" FontSize="20" Text="Select User" IsEditable="True" MaxDropDownHeight="155" SelectionChanged="UserName_SelectionChanged"/>
     </Grid>
 </Window>

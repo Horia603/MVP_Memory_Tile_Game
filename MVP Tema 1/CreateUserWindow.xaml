@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MVP_Tema_1"
         mc:Ignorable="d"
-        Title="CreateUserWindow" Height="700" Width="600">
+        Title="CreateUserWindow" Height="700" Width="600" ResizeMode="NoResize">
     <Grid>
         <Image  x:Name="ProfilePicture" HorizontalAlignment="Left" Height="200" Margin="200,100,0,0" VerticalAlignment="Top" Width="200" Stretch="UniformToFill"/>
         <Button x:Name="PreviousButton" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="100,350,0,0" VerticalAlignment="Top" Height="65" Width="100" Click="PreviousButton_Click"/>

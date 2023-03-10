@@ -20,19 +20,10 @@ namespace MVP_Tema_1
         public CreateUserWindow()
         {
             InitializeComponent();
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             GetImages();
             GetUsers();
             ProfilePicture.Source = new BitmapImage(new Uri(filePaths[currentImageIndex], UriKind.Absolute));
-            Closing += Window_Closing;
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            var mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            if (mainWindow != null)
-            {
-                mainWindow.Refresh();
-            }
         }
 
         private void GetImages()
@@ -47,8 +38,12 @@ namespace MVP_Tema_1
             if (currentImageIndex > 0)
             {
                 currentImageIndex--;
-                ProfilePicture.Source = new BitmapImage(new Uri(filePaths[currentImageIndex], UriKind.Absolute));
             }
+            else
+            {
+                currentImageIndex = filePaths.Length - 1;
+            }
+            ProfilePicture.Source = new BitmapImage(new Uri(filePaths[currentImageIndex], UriKind.Absolute));
 
         }
         private void NextButton_Click(object sender, RoutedEventArgs e)
@@ -56,8 +51,12 @@ namespace MVP_Tema_1
             if (currentImageIndex < filePaths.Length - 1)
             {
                 currentImageIndex++;
-                ProfilePicture.Source = new BitmapImage(new Uri(filePaths[currentImageIndex], UriKind.Absolute));
             }
+            else
+            {
+                currentImageIndex = 0;
+            }
+            ProfilePicture.Source = new BitmapImage(new Uri(filePaths[currentImageIndex], UriKind.Absolute));
         }
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
@@ -75,15 +74,39 @@ namespace MVP_Tema_1
 
         private void CreateAcount_Click(object sender, RoutedEventArgs e)
         {
-            newUser.UserName = UserNameBox.Text;
-            newUser.Photo = ProfilePicture.Source.ToString();
+            if(UserNameBox.Text == "Enter username" || UserNameBox.Text == "New User" || UserNameBox.Text == "Select User")
+            {
+                MessageBox.Show("Invalid username", "Invalid username");
+                return;
+            }
 
+            foreach(var user in users)
+            {
+                if(user.UserName == UserNameBox.Text)
+                {
+                    MessageBox.Show("Username already tacken", "Username tacken");
+                    return;
+                }
+            }
+
+            newUser.UserName = UserNameBox.Text;
+            int lastIndex = ProfilePicture.Source.ToString().LastIndexOf('/');
+            newUser.Photo = ProfilePicture.Source.ToString().Substring(lastIndex + 1);
             users.Add(newUser);
 
-            using (FileStream fileStream = new FileStream("Resources\\BinaryFiles\\Users.dat", FileMode.Create))
+            string projectDirectory = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
+            string filePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(projectDirectory, "Resource\\BinaryFiles\\Users.dat"));
+
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(fileStream, users);
+            }
+
+            var mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            if (mainWindow != null)
+            {
+                mainWindow.Refresh();
             }
 
             Close();
@@ -91,10 +114,20 @@ namespace MVP_Tema_1
 
         private void GetUsers()
         {
-            using (FileStream fileStream = new FileStream("Resources\\BinaryFiles\\Users.dat", FileMode.Open))
+            string projectDirectory = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
+            string filePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(projectDirectory, "Resource\\BinaryFiles\\Users.dat"));
+
+            try
             {
-                BinaryFormatter formatter = new BinaryFormatter();
-                this.users = (List<User>)formatter.Deserialize(fileStream);
+                using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
+                {
+                    BinaryFormatter formatter = new BinaryFormatter();
+                    this.users = (List<User>)formatter.Deserialize(fileStream);
+                }
+            }
+            catch
+            {
+                this.users = new List<User>();
             }
         }
     }
