@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media.Imaging;
 
 namespace MVP_Tema_1
@@ -14,7 +16,9 @@ namespace MVP_Tema_1
     public partial class MainWindow : Window
     {
         private string[] photos = null;
+        string defaultPhoto = null;
         ComboBoxItem newUser = new ComboBoxItem();
+        ComboBoxItem selectUser = new ComboBoxItem();
         List<User> users = new List<User>();
         User currentUser = null;  
         public MainWindow()
@@ -23,10 +27,14 @@ namespace MVP_Tema_1
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             GetImages();
             GetUsers();
-            ProfilePicture.Source = new BitmapImage(new Uri(photos[0], UriKind.Absolute));
+            ProfilePicture.Source = new BitmapImage(new Uri(defaultPhoto, UriKind.Absolute));
             newUser.FontSize = 20;
             newUser.Content = "New User";
+            selectUser.FontSize = 20;
+            selectUser.Content = "Select User";
+            selectUser.Visibility = Visibility.Collapsed;
             AddUsersToSelector();
+            UserSelector.SelectedItem = selectUser;
         }
 
         private void GetImages()
@@ -34,6 +42,11 @@ namespace MVP_Tema_1
             string projectDirectory = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
             string filePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(projectDirectory, "Resource\\ProfilePhotos"));
             photos = Directory.GetFiles(filePath, "*.png");
+            List<string> photoList = photos.ToList<string>();
+            defaultPhoto = photoList.Find(item => item.Contains("user.png"));
+            photoList.Remove(defaultPhoto);
+            photos = photoList.ToArray();
+            photoList.Clear();
         }
 
         private void UserName_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -47,6 +60,13 @@ namespace MVP_Tema_1
             {
                 CreateUserWindow createUserWindow = new CreateUserWindow();
                 createUserWindow.ShowDialog();
+                if(createUserWindow.DialogResult == false)
+                {
+                    UserSelector.SelectedItem = null;
+                    UserSelector.Text = "Select User";
+                    ProfilePicture.Source = new BitmapImage(new Uri(defaultPhoto, UriKind.Absolute));
+                    return;
+                }
             }
 
             foreach(User user in users)
@@ -88,6 +108,7 @@ namespace MVP_Tema_1
         {
             UserSelector.Items.Clear();
             UserSelector.Items.Add(newUser);
+            UserSelector.Items.Add(selectUser);
 
             foreach (User user in users)
             {
@@ -117,6 +138,7 @@ namespace MVP_Tema_1
             {
                 UserSelector.Text = "Select User";
             }
+            ProfilePicture.Source = new BitmapImage(new Uri(defaultPhoto, UriKind.Absolute));
         }
 
         private void DeleteUserButton_Click(object sender, RoutedEventArgs e)
@@ -138,6 +160,26 @@ namespace MVP_Tema_1
             }
 
             Refresh(-1);
+        }
+
+        private void QuitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void NewGameButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void LoadGameButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void StatisticsButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -13,7 +13,8 @@ namespace MVP_Tema_1
     /// </summary>
     public partial class CreateUserWindow : Window
     {
-        private string[] filePaths = null;
+        private string[] photos = null;
+        string defaultPhoto = null;
         private int currentImageIndex = 0;
         List<User> users = new List<User>();
         User newUser = new User();
@@ -23,14 +24,19 @@ namespace MVP_Tema_1
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             GetImages();
             GetUsers();
-            ProfilePicture.Source = new BitmapImage(new Uri(filePaths[currentImageIndex], UriKind.Absolute));
+            ProfilePicture.Source = new BitmapImage(new Uri(photos[0], UriKind.Absolute));
         }
 
         private void GetImages()
         {
             string projectDirectory = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
             string filePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(projectDirectory, "Resource\\ProfilePhotos"));
-            filePaths = Directory.GetFiles(filePath, "*.png");
+            photos = Directory.GetFiles(filePath, "*.png");
+            List<string> photoList = photos.ToList<string>();
+            defaultPhoto = photoList.Find(item => item.Contains("user.png"));
+            photoList.Remove(defaultPhoto);
+            photos = photoList.ToArray();
+            photoList.Clear();
         }
 
         private void PreviousButton_Click(object sender, RoutedEventArgs e)
@@ -41,14 +47,14 @@ namespace MVP_Tema_1
             }
             else
             {
-                currentImageIndex = filePaths.Length - 1;
+                currentImageIndex = photos.Length - 1;
             }
-            ProfilePicture.Source = new BitmapImage(new Uri(filePaths[currentImageIndex], UriKind.Absolute));
+            ProfilePicture.Source = new BitmapImage(new Uri(photos[currentImageIndex], UriKind.Absolute));
 
         }
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            if (currentImageIndex < filePaths.Length - 1)
+            if (currentImageIndex < photos.Length - 1)
             {
                 currentImageIndex++;
             }
@@ -56,7 +62,7 @@ namespace MVP_Tema_1
             {
                 currentImageIndex = 0;
             }
-            ProfilePicture.Source = new BitmapImage(new Uri(filePaths[currentImageIndex], UriKind.Absolute));
+            ProfilePicture.Source = new BitmapImage(new Uri(photos[currentImageIndex], UriKind.Absolute));
         }
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
@@ -102,7 +108,7 @@ namespace MVP_Tema_1
                 BinaryFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(fileStream, users);
             }
-
+            this.DialogResult = true;
             var mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             if (mainWindow != null)
             {

@@ -7,10 +7,10 @@
         mc:Ignorable="d"
         Title="CreateUserWindow" Height="700" Width="600" ResizeMode="NoResize">
     <Grid>
-        <Image  x:Name="ProfilePicture" HorizontalAlignment="Left" Height="200" Margin="200,100,0,0" VerticalAlignment="Top" Width="200" Stretch="UniformToFill"/>
-        <Button x:Name="PreviousButton" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="100,350,0,0" VerticalAlignment="Top" Height="65" Width="100" Click="PreviousButton_Click"/>
-        <Button x:Name="NextButton" Content=">>" HorizontalAlignment="Left" Margin="400,350,0,0" VerticalAlignment="Top" Height="65" Width="100" Click="NextButton_Click"/>
-        <TextBox x:Name="UserNameBox" HorizontalAlignment="Center" Margin="0,480,0,0" TextWrapping="Wrap" Text="Enter username" VerticalAlignment="Top" Width="300" Height="30" FontSize="20" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
-        <Button x:Name="CreateAcount" Content="Create Account" HorizontalAlignment="Center" Margin="0,560,0,0" VerticalAlignment="Top" Height="50" Width="200" Click="CreateAcount_Click"/>
+        <Image  x:Name="ProfilePicture" HorizontalAlignment="Left" Height="250" Margin="175,60,0,0" VerticalAlignment="Top" Width="250" Stretch="UniformToFill"/>
+        <Button x:Name="PreviousButton" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="100,350,0,0" VerticalAlignment="Top" Height="65" Width="100" FontSize="30" Click="PreviousButton_Click"/>
+        <Button x:Name="NextButton" Content=">>" HorizontalAlignment="Left" Margin="400,350,0,0" VerticalAlignment="Top" Height="65" Width="100" FontSize="30" Click="NextButton_Click"/>
+        <TextBox x:Name="UserNameBox" HorizontalAlignment="Center" Margin="0,470,0,0" TextWrapping="Wrap" Text="Enter username" VerticalAlignment="Top" Width="300" Height="40" FontSize="25" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
+        <Button x:Name="CreateAcount" Content="Create Account" HorizontalAlignment="Center" Margin="0,550,0,0" VerticalAlignment="Top" Height="50" Width="200" FontSize="20" Click="CreateAcount_Click"/>
     </Grid>
 </Window>

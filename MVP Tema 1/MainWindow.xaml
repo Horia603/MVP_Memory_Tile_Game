@@ -7,11 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="1000" ResizeMode="NoResize">
     <Grid>
-        <Image  x:Name="ProfilePicture" HorizontalAlignment="Left" Height="200" Margin="610,130,0,0" VerticalAlignment="Top" Width="200" Stretch="UniformToFill"/>
-        <Button x:Name="NewGameButton"  Content="New Game" HorizontalAlignment="Left" Margin="120,110,0,0" VerticalAlignment="Top" Height="100" Width="180" FontSize="30"/>
-        <Button x:Name="LoadGameButton"  Content="Load Game" HorizontalAlignment="Left" Margin="120,280,0,0" VerticalAlignment="Top" Height="100" Width="180" FontSize="30"/>
-        <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Left" Margin="120,450,0,0" VerticalAlignment="Top" Height="100" Width="180" FontSize="30"/>
-        <Button x:Name="DeleteUserButton" Content="Delete User" HorizontalAlignment="Left" Margin="610,480,0,0" VerticalAlignment="Top" Height="45" Width="200" FontSize="20" Click="DeleteUserButton_Click"/>
-        <ComboBox x:Name="UserSelector" HorizontalAlignment="Left" Margin="610,390,0,0" VerticalAlignment="Top" Width="200" Height="35" FontSize="20" Text="Select User" IsEditable="True" MaxDropDownHeight="155" SelectionChanged="UserName_SelectionChanged"/>
+        <Image  x:Name="ProfilePicture" HorizontalAlignment="Left" Height="250" Margin="585,140,0,0" VerticalAlignment="Top" Width="250" Stretch="UniformToFill"/>
+        <Button x:Name="NewGameButton"  Content="New Game" HorizontalAlignment="Left" Margin="120,140,0,0" VerticalAlignment="Top" Height="80" Width="180" FontSize="30" Click="NewGameButton_Click"/>
+        <Button x:Name="LoadGameButton"  Content="Load Game" HorizontalAlignment="Left" Margin="120,250,0,0" VerticalAlignment="Top" Height="80" Width="180" FontSize="30" Click="LoadGameButton_Click"/>
+        <Button x:Name="StatisticsButton"  Content="Statistics" HorizontalAlignment="Left" Margin="120,360,0,0" VerticalAlignment="Top" Height="80" Width="180" FontSize="30" Click="StatisticsButton_Click"/>
+        <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Left" Margin="120,470,0,0" VerticalAlignment="Top" Height="80" Width="180" FontSize="30" Click="QuitButton_Click"/>
+        <Button x:Name="DeleteUserButton" Content="Delete User" HorizontalAlignment="Left" Margin="610,500,0,0" VerticalAlignment="Top" Height="50" Width="200" FontSize="20" Click="DeleteUserButton_Click"/>
+        <ComboBox x:Name="UserSelector" HorizontalAlignment="Left" Margin="610,430,0,0" VerticalAlignment="Top" Width="200" Height="35" FontSize="20" IsEditable="False" Text="Select User" MaxDropDownHeight="155" SelectionChanged="UserName_SelectionChanged"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0,20,0,0" TextWrapping="Wrap" Text="Memory Tiles" VerticalAlignment="Top" FontSize="70"/>
     </Grid>
 </Window>
