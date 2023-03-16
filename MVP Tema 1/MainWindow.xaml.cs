@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Media.Imaging;
 
 namespace MVP_Tema_1
@@ -35,6 +34,31 @@ namespace MVP_Tema_1
             selectUser.Visibility = Visibility.Collapsed;
             AddUsersToSelector();
             UserSelector.SelectedItem = selectUser;
+        }
+
+        public MainWindow(User user)
+        {
+            InitializeComponent();
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            GetImages();
+            GetUsers();
+            newUser.FontSize = 20;
+            newUser.Content = "New User";
+            selectUser.FontSize = 20;
+            selectUser.Content = "Select User";
+            selectUser.Visibility = Visibility.Collapsed;
+            AddUsersToSelector();
+            currentUser = user;
+            string projectDirectory = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
+            string filePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(projectDirectory, "Resource\\ProfilePhotos\\" + currentUser.Photo));
+            ProfilePicture.Source = new BitmapImage(new Uri(filePath, UriKind.Absolute));
+            foreach(ComboBoxItem userItem in UserSelector.Items)
+            {
+                if(userItem.Content.ToString() == currentUser.UserName)
+                {
+                    UserSelector.SelectedItem = userItem;
+                }
+            }
         }
 
         private void GetImages()
@@ -169,17 +193,30 @@ namespace MVP_Tema_1
 
         private void NewGameButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (UserSelector.SelectedItem == selectUser)
+            {
+                MessageBox.Show("Select or create an account");
+            }
         }
 
         private void LoadGameButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (UserSelector.SelectedItem == selectUser)
+            {
+                MessageBox.Show("Select or create an account");
+            }
         }
 
         private void StatisticsButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (UserSelector.SelectedItem == selectUser)
+            {
+                MessageBox.Show("Select or create an account");
+                return;
+            }
+            StatisticsWindow statisticsWindow = new StatisticsWindow(currentUser);
+            statisticsWindow.Show();
+            Close();
         }
     }
 }
