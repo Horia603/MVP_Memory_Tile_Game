@@ -48,13 +48,18 @@ namespace MVP_Tema_1
             selectUser.Content = "Select User";
             selectUser.Visibility = Visibility.Collapsed;
             AddUsersToSelector();
+            SetCurrentUser(user);
+        }
+
+        private void SetCurrentUser(User user)
+        {
             currentUser = user;
             string projectDirectory = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
             string filePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(projectDirectory, "Resource\\ProfilePhotos\\" + currentUser.Photo));
             ProfilePicture.Source = new BitmapImage(new Uri(filePath, UriKind.Absolute));
-            foreach(ComboBoxItem userItem in UserSelector.Items)
+            foreach (ComboBoxItem userItem in UserSelector.Items)
             {
-                if(userItem.Content.ToString() == currentUser.UserName)
+                if (userItem.Content.ToString() == currentUser.UserName)
                 {
                     UserSelector.SelectedItem = userItem;
                 }

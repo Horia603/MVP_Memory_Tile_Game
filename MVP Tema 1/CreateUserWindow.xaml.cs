@@ -17,7 +17,7 @@ namespace MVP_Tema_1
         string defaultPhoto = null;
         private int currentImageIndex = 0;
         List<User> users = new List<User>();
-        User newUser = new User();
+        User newUser;
         public CreateUserWindow()
         {
             InitializeComponent();
@@ -94,10 +94,8 @@ namespace MVP_Tema_1
                     return;
                 }
             }
-
-            newUser.UserName = UserNameBox.Text;
             int lastIndex = ProfilePicture.Source.ToString().LastIndexOf('/');
-            newUser.Photo = ProfilePicture.Source.ToString().Substring(lastIndex + 1);
+            newUser = new User(UserNameBox.Text, ProfilePicture.Source.ToString().Substring(lastIndex + 1));
             users.Add(newUser);
 
             string projectDirectory = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;

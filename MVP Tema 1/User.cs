@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Collections.Generic;
 
 namespace MVP_Tema_1
 {
@@ -10,6 +11,7 @@ namespace MVP_Tema_1
         private string photo;
         private int playedGames;
         private int winnedGames;
+        private List<Game> savedGames;
 
         public User() { }
         public User(string username, string photo)
@@ -18,6 +20,7 @@ namespace MVP_Tema_1
             this.photo = photo;
             playedGames = 0;
             winnedGames = 0;
+            savedGames = new List<Game>();
         }
         
         public string UserName
@@ -44,12 +47,18 @@ namespace MVP_Tema_1
             set { winnedGames = value; }
         }
 
+        public List<Game> SavedGames
+        {   get { return savedGames; }
+            set { savedGames = value; }
+        }
+
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("username", username);
             info.AddValue("photo", photo);
             info.AddValue("playedGames", playedGames);
             info.AddValue("winnedGames", winnedGames);
+            info.AddValue("savedGames", savedGames);
         }
 
         public User(SerializationInfo info, StreamingContext context)
@@ -58,6 +67,7 @@ namespace MVP_Tema_1
             Photo = (string)info.GetValue("photo", typeof(string));
             PlayedGames = (int)info.GetValue("playedGames", typeof(int));
             WinnedGames = (int)info.GetValue("winnedGames", typeof(int));
+            SavedGames = (List<Game>)info.GetValue("savedGames", typeof(List<Game>));
         }
     }
 }
