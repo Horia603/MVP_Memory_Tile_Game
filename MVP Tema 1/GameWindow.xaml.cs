@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,18 +26,25 @@ namespace MVP_Tema_1
         private bool stopTimeBar = false;
         private int boardSize;
         private Button flipedTile = null;
+        private Button jokerTile = null;
         private Tuple<int, int> flipedTilePosition = null;
         private string projectDirectory = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
-        public GameWindow(User player, int size)
+        private bool forceClose = true;
+        public GameWindow(User player, int size, Game game = null)
         {
             InitializeComponent();
             WindowStyle = WindowStyle.None;
             WindowState = WindowState.Maximized;
             currentPlayer = player;
             boardSize = size;
-            currentGame = new Game(1, boardSize);
+            if (game == null)
+                currentGame = new Game(1, boardSize);
+            else
+                currentGame = game;
+            if (currentGame.CurrentLevel == 1)
+                currentPlayer.PlayedGames++;
             PlayerName.Text = currentPlayer.UserName;
-            CurrentLevel.Text = "Level " + currentGame.CurrentLevel.ToString();
+            CurrentLevel.Text = "Level " + currentGame.CurrentLevel.ToString() + "/3";
             string filePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(projectDirectory, "Resource\\ProfilePhotos\\" + currentPlayer.Photo));
             PlayerImage.Source = new BitmapImage(new Uri(filePath, UriKind.Absolute));
             DataContext = this;
@@ -87,6 +98,9 @@ namespace MVP_Tema_1
             {
                 stopTimeBar = true;
                 MessageBox.Show("Time is up!", "Game Over");
+                MainWindow mainWindow = new MainWindow(currentPlayer);
+                mainWindow.Show();
+                Close();
             }
         }
 
@@ -97,6 +111,10 @@ namespace MVP_Tema_1
                 for (int col = 0; col < n; col++)
                 {
                     Button button = new Button();
+                    if (currentGame.CurrentBoard.BoardMatrix[row][col].Image == "joker.png")
+                    {
+                        jokerTile = button;
+                    }
                     button.Name = "Button_" + row + "_" + col;
                     button.Content = "?";
                     button.FontSize = 500 / boardSize;
@@ -138,7 +156,6 @@ namespace MVP_Tema_1
             {
                 flipedTile = clickedTile;
                 flipedTilePosition = new Tuple<int, int>(row, column);
-                currentGame.CurrentBoard.FlipTile(new Tuple<int, int>(row, column));
                 Image image = new Image();
                 if(currentGame.CurrentBoard.BoardMatrix[row][column].Image == "joker.png")
                 {
@@ -186,15 +203,92 @@ namespace MVP_Tema_1
                 }
                 else
                 {
+                    currentGame.CurrentBoard.FlipTile(flipedTilePosition);
+                    currentGame.CurrentBoard.FlipTile(new Tuple<int, int>(row, column));
                     flipedTile = null;
                     flipedTilePosition = null;
+                    if(currentGame.CheckGameEnding())
+                    {
+                        if(jokerTile != null)
+                        {
+                            Image jokerImage = new Image();
+                            jokerImage.Source = new BitmapImage(new Uri(jokerPath, UriKind.Absolute));
+                            jokerTile.Content = jokerImage;
+                            jokerTile.IsEnabled = false;
+                            jokerTile.Background = new SolidColorBrush(Color.FromRgb(0, 0, 100));
+                        }
+
+                        stopTimeBar = true;
+                        MessageBox.Show("Level " + currentGame.CurrentLevel.ToString() + " completed", "Level Completed");
+                        if (currentGame.CurrentLevel < 3)
+                        {
+                            GameWindow gameWindow = new GameWindow(currentPlayer, boardSize, new Game(++currentGame.CurrentLevel, boardSize));
+                            gameWindow.Show();
+                        }
+                        else
+                        {
+                            currentPlayer.WinnedGames++;
+                            forceClose = false;
+                            SaveGame();
+                            MainWindow mainWindow = new MainWindow(currentPlayer);
+                            mainWindow.Show();
+                        }
+                            
+                        Close();
+                    }
                 }
+            }
+        }
+
+        private List<User> GetUsers()
+        {
+            string projectDirectory = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
+            string filePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(projectDirectory, "Resource\\BinaryFiles\\Users.dat"));
+
+            List<User> users = new List<User>();
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                users = (List<User>)formatter.Deserialize(fileStream);
+            }
+            return users;
+        }
+
+        void SaveGame()
+        {
+            string projectDirectory = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
+            string filePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(projectDirectory, "Resource\\BinaryFiles\\Users.dat"));
+
+            //currentPlayer.SavedGames.Add(currentGame);
+            List<User> users = GetUsers();
+            for (int i = 0; i < users.Count; i++) 
+            {
+                if (users[i].UserName == currentPlayer.UserName)
+                {
+                    users[i] = currentPlayer;
+                    break;
+                }
+            }
+
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(fileStream, users);
+            }
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            stopTimeBar = true;
+            if (forceClose)
+            {
+                SaveGame();
             }
         }
 
         ControlTemplate CreateButtonTemplate()
         {
-            SolidColorBrush disabledBackgroundBrush = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+            SolidColorBrush disabledBackgroundBrush = new SolidColorBrush(Color.FromRgb(0, 0, 100));
 
             ControlTemplate customButtonTemplate = new ControlTemplate(typeof(Button));
             FrameworkElementFactory border = new FrameworkElementFactory(typeof(Border));

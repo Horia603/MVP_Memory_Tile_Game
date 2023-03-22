@@ -41,10 +41,7 @@ namespace MVP_Tema_1
 
         public void Flip()
         {
-            if (visible)
-                visible = false;
-            else
-                visible = true;
+            visible = true;
         }
     }
 }

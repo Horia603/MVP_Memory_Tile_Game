@@ -92,7 +92,7 @@ namespace MVP_Tema_1
             }
             return tiles;
         }
-
+        //Knuth shuffle algorithm
         List<Tile> ShuffleTileList(List<Tile> tileList)
         {
             Random rng = new Random();

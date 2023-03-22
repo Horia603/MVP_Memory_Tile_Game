@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:MVP_Tema_1"
         mc:Ignorable="d"
         Title="GameWindow" Height="450" Width="800" ResizeMode="NoResize"
-        ContentRendered="Window_ContentRendered">
+        ContentRendered="Window_ContentRendered"
+        Closing="Window_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>

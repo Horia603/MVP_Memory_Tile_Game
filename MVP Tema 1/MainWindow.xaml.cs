@@ -142,7 +142,6 @@ namespace MVP_Tema_1
             foreach (User user in users)
             {
                 ComboBoxItem userItem = new ComboBoxItem();
-                userItem = new ComboBoxItem();
                 userItem.FontSize = 20;
                 userItem.Content = user.UserName;
                 UserSelector.Items.Add(userItem);
@@ -200,11 +199,11 @@ namespace MVP_Tema_1
         {
             if (UserSelector.SelectedItem == selectUser)
             {
-                MessageBox.Show("Select or create an account");
+                MessageBox.Show("Select or create an account", "No user selected");
                 return;
             }
-            GameWindow gameWindow = new GameWindow(currentUser, 6);
-            gameWindow.Show();
+            BoardSizeSelectionWindow boardSizeSelectionWindow = new BoardSizeSelectionWindow(currentUser);
+            boardSizeSelectionWindow.Show();
             Close();
         }
 
@@ -212,7 +211,7 @@ namespace MVP_Tema_1
         {
             if (UserSelector.SelectedItem == selectUser)
             {
-                MessageBox.Show("Select or create an account");
+                MessageBox.Show("Select or create an account", "No user selected");
                 return;
             }
             GameWindow gameWindow = new GameWindow(currentUser, 5);
@@ -224,7 +223,7 @@ namespace MVP_Tema_1
         {
             if (UserSelector.SelectedItem == selectUser)
             {
-                MessageBox.Show("Select or create an account");
+                MessageBox.Show("Select or create an account", "No user selected");
                 return;
             }
             StatisticsWindow statisticsWindow = new StatisticsWindow(currentUser);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace MVP_Tema_1
@@ -25,6 +26,21 @@ namespace MVP_Tema_1
         {
             this.currentLevel = currentLevel;
             currentBoard = new Board(boardSize);
+        }
+
+        public bool CheckGameEnding()
+        {
+            foreach(List<Tile> tiles in currentBoard.BoardMatrix)
+            {
+                foreach(Tile tile in tiles)
+                {
+                    if (tile.Visible == false && tile.Image != "joker.png")
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
