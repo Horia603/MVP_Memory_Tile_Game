@@ -21,14 +21,10 @@ namespace MVP_Tema_1
             set { currentLevel = value; }
         }
 
-        public Game()
-        {
-            currentLevel = 1;
-        }
-
-        public Game(int currentLevel)
+        public Game(int currentLevel = 1, int boardSize = 5)
         {
             this.currentLevel = currentLevel;
+            currentBoard = new Board(boardSize);
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)

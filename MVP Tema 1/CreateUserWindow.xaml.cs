@@ -5,6 +5,7 @@ using System.Windows.Media.Imaging;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace MVP_Tema_1
 {
@@ -86,6 +87,18 @@ namespace MVP_Tema_1
                 return;
             }
 
+            if(!Regex.IsMatch(UserNameBox.Text, "^[a-zA-Z ]+$"))
+            {
+                MessageBox.Show("Username must contain only letters", "Invalid username");
+                return;
+            }
+
+            if(UserNameBox.Text.Length > 20)
+            {
+                MessageBox.Show("Username must have at most 20 characters", "Invalid username");
+                return;
+            }
+
             foreach(var user in users)
             {
                 if(user.UserName == UserNameBox.Text)
@@ -94,6 +107,7 @@ namespace MVP_Tema_1
                     return;
                 }
             }
+
             int lastIndex = ProfilePicture.Source.ToString().LastIndexOf('/');
             newUser = new User(UserNameBox.Text, ProfilePicture.Source.ToString().Substring(lastIndex + 1));
             users.Add(newUser);

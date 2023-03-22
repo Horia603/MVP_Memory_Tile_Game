@@ -201,7 +201,11 @@ namespace MVP_Tema_1
             if (UserSelector.SelectedItem == selectUser)
             {
                 MessageBox.Show("Select or create an account");
+                return;
             }
+            GameWindow gameWindow = new GameWindow(currentUser, 6);
+            gameWindow.Show();
+            Close();
         }
 
         private void LoadGameButton_Click(object sender, RoutedEventArgs e)
@@ -209,7 +213,11 @@ namespace MVP_Tema_1
             if (UserSelector.SelectedItem == selectUser)
             {
                 MessageBox.Show("Select or create an account");
+                return;
             }
+            GameWindow gameWindow = new GameWindow(currentUser, 5);
+            gameWindow.Show();
+            Close();
         }
 
         private void StatisticsButton_Click(object sender, RoutedEventArgs e)

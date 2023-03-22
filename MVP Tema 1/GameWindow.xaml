@@ -5,8 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MVP_Tema_1"
         mc:Ignorable="d"
-        Title="GameWindow" Height="450" Width="800" ResizeMode="NoResize">
+        Title="GameWindow" Height="450" Width="800" ResizeMode="NoResize"
+        ContentRendered="Window_ContentRendered">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Image x:Name="PlayerImage" HorizontalAlignment="Left" Height="70" Margin="0,10,0,0" VerticalAlignment="Top" Width="70" Grid.Column="1"/>
+        <TextBlock x:Name="PlayerName" HorizontalAlignment="Left" Margin="110,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="70" FontSize="50" TextAlignment="Center" Grid.Column="1"/>
+        <Button x:Name="SaveButton" Content="Save Game" HorizontalAlignment="Right" Margin="0,10,200,0" VerticalAlignment="Top" Height="70" Width="200" FontSize="30" Click="SaveButton_Click" Grid.Column="1"/>
+        <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Right" Margin="0,10,0,0" VerticalAlignment="Top" Height="70" Width="130" FontSize="30" Click="QuitButton_Click" Grid.Column="1"/>
+        <TextBlock x:Name="CurrentLevel" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="70" FontSize="50" TextAlignment="Center" Grid.Column="1"/>
+        <ProgressBar x:Name="TimeBar" Height="30" Minimum="0" Maximum="60" Value="{Binding Progress}" Margin="0,100,0,300" VerticalAlignment="Top" Grid.Column="1"/>
+        <UniformGrid Name="Table" Columns="{Binding Size}" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="1" Margin="0,150,0,0" Height="920" Width="1910">
+            <UniformGrid.Resources>
+                <Style TargetType="{x:Type Button}">
+                </Style>
+            </UniformGrid.Resources>
+        </UniformGrid>
     </Grid>
 </Window>

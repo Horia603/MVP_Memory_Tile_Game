@@ -21,7 +21,7 @@ namespace MVP_Tema_1
             set { visible = value; }
         }
 
-        public Tile(string image)
+        public Tile(string image = null)
         {
             this.image = image;
             visible = false;
@@ -37,6 +37,14 @@ namespace MVP_Tema_1
         {
             Image = (string)info.GetValue("image", typeof(string));
             Visible = (bool)info.GetValue("visible", typeof(bool));
+        }
+
+        public void Flip()
+        {
+            if (visible)
+                visible = false;
+            else
+                visible = true;
         }
     }
 }
