@@ -22,10 +22,10 @@ namespace MVP_Tema_1
             set { currentLevel = value; }
         }
 
-        public Game(int currentLevel = 1, int boardSize = 5)
+        public Game(int currentLevel = 1, int boardWidth = 5, int boardHeight = 5)
         {
             this.currentLevel = currentLevel;
-            currentBoard = new Board(boardSize);
+            currentBoard = new Board(boardWidth, boardHeight);
         }
 
         public bool CheckGameEnding()

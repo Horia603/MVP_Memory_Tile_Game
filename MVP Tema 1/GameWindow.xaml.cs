@@ -24,21 +24,23 @@ namespace MVP_Tema_1
         private User currentPlayer;
         private Game currentGame;
         private bool stopTimeBar = false;
-        private int boardSize;
+        private int boardWidth;
+        private int boardHeight;
         private Button flipedTile = null;
         private Button jokerTile = null;
         private Tuple<int, int> flipedTilePosition = null;
         private string projectDirectory = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
         private bool forceClose = true;
-        public GameWindow(User player, int size, Game game = null)
+        public GameWindow(User player, int width, int height, Game game = null)
         {
             InitializeComponent();
             WindowStyle = WindowStyle.None;
             WindowState = WindowState.Maximized;
             currentPlayer = player;
-            boardSize = size;
+            boardWidth = width;
+            boardHeight = height;
             if (game == null)
-                currentGame = new Game(1, boardSize);
+                currentGame = new Game(1, boardWidth, boardHeight);
             else
                 currentGame = game;
             if (currentGame.CurrentLevel == 1)
@@ -48,7 +50,7 @@ namespace MVP_Tema_1
             string filePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(projectDirectory, "Resource\\ProfilePhotos\\" + currentPlayer.Photo));
             PlayerImage.Source = new BitmapImage(new Uri(filePath, UriKind.Absolute));
             DataContext = this;
-            CreateTable(boardSize);
+            CreateTable(boardWidth, boardHeight);
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -104,11 +106,25 @@ namespace MVP_Tema_1
             }
         }
 
-        private void CreateTable(int n)
+        private void CreateTable(int width, int height)
         {
-            for (int row = 0; row < n; row++)
+            for (int i = 0; i < height; i++)
             {
-                for (int col = 0; col < n; col++)
+                RowDefinition row = new RowDefinition();
+                row.Height = new GridLength(1, GridUnitType.Star);
+                Table.RowDefinitions.Add(row);
+            }
+
+            for (int j = 0; j < width; j++)
+            {
+                ColumnDefinition col = new ColumnDefinition();
+                col.Width = new GridLength(1, GridUnitType.Star);
+                Table.ColumnDefinitions.Add(col);
+            }
+
+            for (int row = 0; row < height; row++)
+            {
+                for (int col = 0; col < width; col++)
                 {
                     Button button = new Button();
                     if (currentGame.CurrentBoard.BoardMatrix[row][col].Image == "joker.png")
@@ -117,7 +133,7 @@ namespace MVP_Tema_1
                     }
                     button.Name = "Button_" + row + "_" + col;
                     button.Content = "?";
-                    button.FontSize = 500 / boardSize;
+                    button.FontSize = 500 / (boardWidth * boardHeight);
                     button.Click += Button_Click;
                     button.Background = new SolidColorBrush(Color.FromRgb(0, 0, 255));
                     button.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -127,7 +143,6 @@ namespace MVP_Tema_1
 
                     Grid.SetRow(button, row);
                     Grid.SetColumn(button, col);
-
                     Table.Children.Add(button);
                 }
             }
@@ -222,7 +237,7 @@ namespace MVP_Tema_1
                         MessageBox.Show("Level " + currentGame.CurrentLevel.ToString() + " completed", "Level Completed");
                         if (currentGame.CurrentLevel < 3)
                         {
-                            GameWindow gameWindow = new GameWindow(currentPlayer, boardSize, new Game(++currentGame.CurrentLevel, boardSize));
+                            GameWindow gameWindow = new GameWindow(currentPlayer, boardWidth, boardHeight, new Game(++currentGame.CurrentLevel, boardWidth, boardHeight));
                             gameWindow.Show();
                         }
                         else

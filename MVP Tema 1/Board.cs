@@ -10,7 +10,8 @@ namespace MVP_Tema_1
     public class Board
     {
         private List<List<Tile>> boardMatrix;
-        private int boardDimension;
+        private int boardWidth;
+        private int boardHeight;
         private string projectDirectory = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
 
         public List<List<Tile>> BoardMatrix
@@ -19,22 +20,29 @@ namespace MVP_Tema_1
             set { boardMatrix = value; }
         }
 
-        public int BoardDimension
+        public int BoardWidth
         {
-            get { return boardDimension; }
-            set { boardDimension = value; }
-        }   
+            get { return boardWidth; }
+            set { boardWidth = value; }
+        }
 
-        public Board(int boardDimension)
+        public int BoardHeight
         {
-            this.boardDimension = boardDimension;
-            List<Tile> tileList = GetTileList(boardDimension);
+            get { return boardHeight; }
+            set { boardHeight = value; }
+        }
+
+        public Board(int boardWidth, int boardHeight)
+        {
+            this.boardWidth = boardWidth;
+            this.boardHeight = boardHeight;
+            List<Tile> tileList = GetTileList(boardWidth, boardHeight);
             tileList = ShuffleTileList(tileList);
             boardMatrix = new List<List<Tile>>();
-            for (int i = 0; i < this.boardDimension; i++)
+            for (int i = 0; i < this.boardHeight; i++)
             {
                 boardMatrix.Add(new List<Tile>());
-                for (int j = 0; j < this.boardDimension; j++)
+                for (int j = 0; j < this.boardWidth; j++)
                 {
                     boardMatrix[i].Add(tileList[0]);
                     tileList.RemoveAt(0);
@@ -45,13 +53,15 @@ namespace MVP_Tema_1
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("boardMatrix", boardMatrix);
-            info.AddValue("boardDimension", boardDimension);
+            info.AddValue("boardWidth", boardWidth);
+            info.AddValue("boardHeight", boardHeight);
         }
 
         public Board(SerializationInfo info, StreamingContext context)
         {
             BoardMatrix = (List<List<Tile>>)info.GetValue("boardMatrix", typeof(List<List<Tile>>));
-            BoardDimension = (int)info.GetValue("boardDimension", typeof(int));
+            BoardWidth = (int)info.GetValue("boardWidth", typeof(int));
+            BoardHeight = (int)info.GetValue("boardHeight", typeof(int));
         }
 
         public bool CompareTiles(Tuple<int, int> pozTile1, Tuple<int, int> pozTile2)
@@ -66,7 +76,7 @@ namespace MVP_Tema_1
             boardMatrix[pozTile.Item1][pozTile.Item2].Flip();
         }
 
-        List<Tile> GetTileList(int boardDimension)
+        List<Tile> GetTileList(int boardWidth, int boardHeight)
         {
             string filePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(projectDirectory, "Resource\\TilesPhotos\\OtherTiles"));
             string[] Sphotos = Directory.GetFiles(filePath, "*.png");
@@ -78,11 +88,11 @@ namespace MVP_Tema_1
                 photos.Add(photoName);
             }
             List<Tile> tiles = new List<Tile>();
-            if (boardDimension % 2 == 1)
+            if ((boardWidth * boardHeight) % 2 == 1)
             {
                 tiles.Add(new Tile("joker.png"));
             }
-            for (int i = 0; i < (boardDimension * boardDimension) - 1; i += 2)
+            for (int i = 0; i < (boardWidth * boardHeight) - 1; i += 2)
             {
                 Random rnd = new Random();
                 int randomNumber = rnd.Next(photos.Count);

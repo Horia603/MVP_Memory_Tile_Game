@@ -9,44 +9,51 @@ namespace MVP_Tema_1
     /// </summary>
     public partial class BoardSizeSelectionWindow : Window
     {
-        private List<ComboBoxItem> itemList = new List<ComboBoxItem>();
-        ComboBoxItem selectSize = null;
+        private List<ComboBoxItem> widthItemList = new List<ComboBoxItem>();
+        private List<ComboBoxItem> heightItemList = new List<ComboBoxItem>();
+        private ComboBoxItem selectWidth = null;
+        private ComboBoxItem selectHeight = null;
         private User currentUser = null;
         public BoardSizeSelectionWindow(User user)
         {
             InitializeComponent();
-            SetSelector();
+
+            selectWidth = SetSelector(WidthSelector, widthItemList);
+            selectHeight = SetSelector(HeightSelector, heightItemList);
             currentUser = user;
         }
 
-        private void SetSelector()
+        private ComboBoxItem SetSelector(ComboBox Selector, List<ComboBoxItem> itemList)
         {
             Selector.Items.Clear();
-            selectSize = new ComboBoxItem();
-            selectSize.FontSize = 20;
-            selectSize.Content = "Select size";
-            selectSize.Visibility = Visibility.Collapsed;
-            Selector.Items.Add(selectSize);
-            Selector.SelectedItem = selectSize;
+            ComboBoxItem selectItem = new ComboBoxItem();
+            selectItem = new ComboBoxItem();
+            selectItem.FontSize = 20;
+            selectItem.Content = "Select size";
+            selectItem.Visibility = Visibility.Collapsed;
+            Selector.Items.Add(selectItem);
+            Selector.SelectedItem = selectItem;
             for (int i = 1; i < 6; i++)
             {
                 ComboBoxItem item = new ComboBoxItem();
                 item.FontSize = 20;
-                item.Content = (i + 1).ToString() + "x" + (i + 1).ToString();
+                item.Content = (i + 1).ToString();
                 itemList.Add(item);
                 Selector.Items.Add(item);
             }
+            return selectItem;
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Selector.SelectedItem == selectSize)
+            if (WidthSelector.SelectedItem == selectWidth || HeightSelector.SelectedItem == selectHeight)
             {
                 MessageBox.Show("Please select a valid board size", "Invalid board size");
                 return;
             }
-            int boardSize = itemList.FindIndex(item => item == Selector.SelectedItem) + 2;
-            GameWindow gameWindow = new GameWindow(currentUser, boardSize);
+            int boardWidth = widthItemList.FindIndex(item => item == WidthSelector.SelectedItem) + 2;
+            int boardHeight = heightItemList.FindIndex(item => item == HeightSelector.SelectedItem) + 2;
+            GameWindow gameWindow = new GameWindow(currentUser, boardWidth, boardHeight);
             gameWindow.Show();
             Close();
         }

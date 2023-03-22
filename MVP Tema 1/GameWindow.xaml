@@ -20,11 +20,11 @@
         <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Right" Margin="0,10,0,0" VerticalAlignment="Top" Height="70" Width="130" FontSize="30" Click="QuitButton_Click" Grid.Column="1"/>
         <TextBlock x:Name="CurrentLevel" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="70" FontSize="50" TextAlignment="Center" Grid.Column="1"/>
         <ProgressBar x:Name="TimeBar" Height="30" Minimum="0" Maximum="60" Value="{Binding Progress}" Margin="0,100,0,300" VerticalAlignment="Top" Grid.Column="1"/>
-        <UniformGrid Name="Table" Columns="{Binding Size}" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="1" Margin="0,150,0,0" Height="920" Width="1910">
-            <UniformGrid.Resources>
+        <Grid Name="Table" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="1" Margin="0,150,0,0" Height="920" Width="1910">
+            <Grid.Resources>
                 <Style TargetType="{x:Type Button}">
                 </Style>
-            </UniformGrid.Resources>
-        </UniformGrid>
+            </Grid.Resources>
+        </Grid>
     </Grid>
 </Window>

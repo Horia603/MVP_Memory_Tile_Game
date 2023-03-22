@@ -7,8 +7,11 @@
         mc:Ignorable="d"
         Title="BoardSizeSelectionWindow" Height="450" Width="800">
     <Grid>
-        <TextBlock HorizontalAlignment="Center" Margin="0,70,0,0" TextWrapping="Wrap" Text="Select board size" VerticalAlignment="Top" FontSize="40" FontWeight="Bold"/>
-        <ComboBox x:Name="Selector" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Width="130" Height="30" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0,60,0,0" TextWrapping="Wrap" Text="Select board size" VerticalAlignment="Top" FontSize="40" FontWeight="Bold"/>
+        <ComboBox x:Name="WidthSelector" HorizontalAlignment="Center" Margin="-400,0,0,0" VerticalAlignment="Center" Width="130" Height="30" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <ComboBox x:Name="HeightSelector" HorizontalAlignment="Center" Margin="400,0,0,0" VerticalAlignment="Center" Width="130" Height="30" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         <Button x:Name="ConfirmButton" Content="Confirm" HorizontalAlignment="Center" Margin="0,340,0,0" VerticalAlignment="Top" FontSize="25" Width="120" Height="50" Click="ConfirmButton_Click" Cursor="Hand"/>
+        <TextBlock HorizontalAlignment="Center" Margin="-400,150,0,0" TextWrapping="Wrap" Text="Width" VerticalAlignment="Top" FontSize="30"/>
+        <TextBlock HorizontalAlignment="Center" Margin="400,150,0,0" TextWrapping="Wrap" Text="Height" VerticalAlignment="Top" FontSize="30"/>
     </Grid>
 </Window>
