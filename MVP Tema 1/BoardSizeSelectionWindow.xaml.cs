@@ -14,6 +14,7 @@ namespace MVP_Tema_1
         private ComboBoxItem selectWidth = null;
         private ComboBoxItem selectHeight = null;
         private User currentUser = null;
+        private bool forceClose = true;
         public BoardSizeSelectionWindow(User user)
         {
             InitializeComponent();
@@ -55,7 +56,17 @@ namespace MVP_Tema_1
             int boardHeight = heightItemList.FindIndex(item => item == HeightSelector.SelectedItem) + 2;
             GameWindow gameWindow = new GameWindow(currentUser, boardWidth, boardHeight);
             gameWindow.Show();
+            forceClose = false;
             Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if(forceClose)
+            {
+                MainWindow mainWindow = new MainWindow(currentUser);
+                mainWindow.Show();
+            }
         }
     }
 }

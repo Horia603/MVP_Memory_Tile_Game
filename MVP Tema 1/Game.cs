@@ -9,6 +9,7 @@ namespace MVP_Tema_1
     {
         private Board currentBoard;
         private int currentLevel;
+        private int pastTime = 0;
 
         public Board CurrentBoard
         {
@@ -20,6 +21,12 @@ namespace MVP_Tema_1
         {
             get { return currentLevel; }
             set { currentLevel = value; }
+        }
+
+        public int PastTime
+        {
+            get { return pastTime; }
+            set { pastTime = value; }
         }
 
         public Game(int currentLevel = 1, int boardWidth = 5, int boardHeight = 5)
@@ -47,12 +54,14 @@ namespace MVP_Tema_1
         {
             info.AddValue("currentBoard", currentBoard);
             info.AddValue("currentLevel", currentLevel);
+            info.AddValue("pastTime", pastTime);
         }
 
         public Game(SerializationInfo info, StreamingContext context)
         {
             CurrentBoard = (Board)info.GetValue("currentBoard", typeof(Board));
             CurrentLevel = (int)info.GetValue("currentLevel", typeof(int));
+            PastTime = (int)info.GetValue("pastTime", typeof (int));
         }
     }
 }

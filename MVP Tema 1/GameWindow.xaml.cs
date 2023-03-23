@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -31,6 +32,7 @@ namespace MVP_Tema_1
         private Tuple<int, int> flipedTilePosition = null;
         private string projectDirectory = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
         private bool forceClose = true;
+        private int workerProgress = 0;
         public GameWindow(User player, int width, int height, Game game = null)
         {
             InitializeComponent();
@@ -55,7 +57,24 @@ namespace MVP_Tema_1
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBoxResult result = MessageBox.Show("Do you want to save the game?", "Save game", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                if (flipedTile != null)
+                {
+                    currentGame.CurrentBoard.BoardMatrix[flipedTilePosition.Item1][flipedTilePosition.Item2].Visible = false;
+                    flipedTile.IsEnabled = true;
+                    flipedTile.Content = "?";
+                    flipedTile.Background = new SolidColorBrush(Color.FromRgb(0, 0, 255));
+                    flipedTile = null;
+                }
+                forceClose = false;
+                stopTimeBar = true;
+                Save(true);
+                MainWindow window = new MainWindow(currentPlayer);
+                window.Show();
+                Close();
+            }
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
@@ -84,10 +103,11 @@ namespace MVP_Tema_1
             int totalSeconds = 60;
             int progressInterval = 100 / totalSeconds;
 
-            for (int i = 0; i <= totalSeconds; i++)
+            for (int i = workerProgress; i <= totalSeconds; i++)
             {
                 if (stopTimeBar)
                     break;
+                workerProgress = i;
                 (sender as BackgroundWorker).ReportProgress(i * progressInterval);
                 Thread.Sleep(1000);
             }
@@ -108,6 +128,8 @@ namespace MVP_Tema_1
 
         private void CreateTable(int width, int height)
         {
+            string filePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(projectDirectory, "Resource\\TilesPhotos\\OtherTiles"));
+
             for (int i = 0; i < height; i++)
             {
                 RowDefinition row = new RowDefinition();
@@ -124,25 +146,36 @@ namespace MVP_Tema_1
 
             for (int row = 0; row < height; row++)
             {
-                for (int col = 0; col < width; col++)
+                for (int column = 0; column < width; column++)
                 {
                     Button button = new Button();
-                    if (currentGame.CurrentBoard.BoardMatrix[row][col].Image == "joker.png")
+                    if (currentGame.CurrentBoard.BoardMatrix[row][column].Image == "joker.png")
                     {
                         jokerTile = button;
                     }
-                    button.Name = "Button_" + row + "_" + col;
+                    button.Name = "Button_" + row + "_" + column;
                     button.Content = "?";
-                    button.FontSize = 500 / (boardWidth * boardHeight);
+                    button.FontSize = 500 / boardHeight;
                     button.Click += Button_Click;
                     button.Background = new SolidColorBrush(Color.FromRgb(0, 0, 255));
                     button.HorizontalAlignment = HorizontalAlignment.Stretch;
                     button.VerticalAlignment = VerticalAlignment.Stretch;
+                    button.HorizontalContentAlignment = HorizontalAlignment.Center;
+                    button.VerticalContentAlignment = VerticalAlignment.Center;
                     button.Margin = new Thickness(5);
                     button.Template = CreateButtonTemplate();
 
+                    if(currentGame.CurrentBoard.BoardMatrix[row][column].Visible)
+                    {
+                        Image image = new Image();
+                        image.Source = new BitmapImage(new Uri(filePath + "\\" + currentGame.CurrentBoard.BoardMatrix[row][column].Image, UriKind.Absolute));
+                        button.Content = image;
+                        button.IsEnabled = false;
+                        button.Background = new SolidColorBrush(Color.FromRgb(0, 0, 100));
+                    }
+
                     Grid.SetRow(button, row);
-                    Grid.SetColumn(button, col);
+                    Grid.SetColumn(button, column);
                     Table.Children.Add(button);
                 }
             }
@@ -244,7 +277,7 @@ namespace MVP_Tema_1
                         {
                             currentPlayer.WinnedGames++;
                             forceClose = false;
-                            SaveGame();
+                            Save(false);
                             MainWindow mainWindow = new MainWindow(currentPlayer);
                             mainWindow.Show();
                         }
@@ -269,12 +302,15 @@ namespace MVP_Tema_1
             return users;
         }
 
-        void SaveGame()
+        void Save(bool saveGame)
         {
             string projectDirectory = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
             string filePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(projectDirectory, "Resource\\BinaryFiles\\Users.dat"));
 
-            //currentPlayer.SavedGames.Add(currentGame);
+            if(saveGame)
+            {
+                currentPlayer.SavedGames.Add(currentGame);
+            }
             List<User> users = GetUsers();
             for (int i = 0; i < users.Count; i++) 
             {
@@ -297,7 +333,7 @@ namespace MVP_Tema_1
             stopTimeBar = true;
             if (forceClose)
             {
-                SaveGame();
+                Save(false);
             }
         }
 

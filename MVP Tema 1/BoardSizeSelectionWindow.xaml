@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MVP_Tema_1"
         mc:Ignorable="d"
-        Title="BoardSizeSelectionWindow" Height="450" Width="800">
+        Title="BoardSizeSelectionWindow" Height="450" Width="800" Closing="Window_Closing">
     <Grid>
         <TextBlock HorizontalAlignment="Center" Margin="0,60,0,0" TextWrapping="Wrap" Text="Select board size" VerticalAlignment="Top" FontSize="40" FontWeight="Bold"/>
         <ComboBox x:Name="WidthSelector" HorizontalAlignment="Center" Margin="-400,0,0,0" VerticalAlignment="Center" Width="130" Height="30" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>

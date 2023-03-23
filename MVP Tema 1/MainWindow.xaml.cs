@@ -214,8 +214,8 @@ namespace MVP_Tema_1
                 MessageBox.Show("Select or create an account", "No user selected");
                 return;
             }
-            GameWindow gameWindow = new GameWindow(currentUser, 5, 5);
-            gameWindow.Show();
+            GamesSelectionWindow gamesSelectionWindow = new GamesSelectionWindow(currentUser);
+            gamesSelectionWindow.Show();
             Close();
         }
 
