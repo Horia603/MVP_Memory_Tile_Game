@@ -15,6 +15,7 @@ namespace MVP_Tema_1
         private ComboBoxItem selectHeight = null;
         private User currentUser = null;
         private bool forceClose = true;
+        private static int maxSize = 7;
         public BoardSizeSelectionWindow(User user)
         {
             InitializeComponent();
@@ -34,7 +35,7 @@ namespace MVP_Tema_1
             selectItem.Visibility = Visibility.Collapsed;
             Selector.Items.Add(selectItem);
             Selector.SelectedItem = selectItem;
-            for (int i = 1; i < 6; i++)
+            for (int i = 1; i < maxSize; i++)
             {
                 ComboBoxItem item = new ComboBoxItem();
                 item.FontSize = 20;

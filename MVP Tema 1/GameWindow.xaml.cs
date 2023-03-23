@@ -115,15 +115,21 @@ namespace MVP_Tema_1
 
         void worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            int totalSeconds = 60;
+            int totalSeconds = 7 * boardWidth * boardHeight;
             int progressInterval = 100 / totalSeconds;
+            int lastProgress = 0;
 
             for (int i = workerProgress; i <= totalSeconds; i++)
             {
                 if (stopTimeBar)
                     break;
                 workerProgress = i;
-                (sender as BackgroundWorker).ReportProgress(i * progressInterval);
+                int progress = i * (progressInterval + 1);
+                if (progress > lastProgress)
+                {
+                    (sender as BackgroundWorker).ReportProgress(progress);
+                    lastProgress = progress;
+                }
                 Thread.Sleep(1000);
             }
         }
@@ -134,6 +140,9 @@ namespace MVP_Tema_1
             if (TimeBar.Value == TimeBar.Maximum)
             {
                 stopTimeBar = true;
+                forceClose = false;
+                DeleteSavedGame();
+                Save(false);
                 MessageBox.Show("Time is up!", "Game Over");
                 MainWindow mainWindow = new MainWindow(currentPlayer);
                 mainWindow.Show();
