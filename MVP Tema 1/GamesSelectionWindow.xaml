@@ -5,14 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MVP_Tema_1"
         mc:Ignorable="d"
-        Title="GamesSelectionWindow" Height="800" Width="1000">
+        Title="GamesSelectionWindow" Height="800" Width="1000" Closing="Window_Closing">
     <Grid>
         <TextBlock HorizontalAlignment="Center" Margin="0,70,0,0" TextWrapping="Wrap" Text="Select the game you want to load" VerticalAlignment="Top" FontSize="35" FontWeight="Bold"/>
         <TextBlock HorizontalAlignment="Center" Margin="0,180,0,0" TextWrapping="Wrap" Text="Game index:                  Current level:                  Board size:" VerticalAlignment="Top" Width="900" FontSize="30" TextAlignment="Center"/>
-        <ScrollViewer x:Name="Viewer" VerticalScrollBarVisibility="Auto" Margin="10,250,10,50" >
-            <Grid>
-                <Grid x:Name="Table" Margin="10,150,10,50" />
-            </Grid>
-        </ScrollViewer>
+        <Grid Margin="10,240,10,10">
+            <ListBox x:Name="SavedGamesList"/>
+        </Grid>
     </Grid>
 </Window>

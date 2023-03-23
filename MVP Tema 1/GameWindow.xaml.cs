@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Common;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows;
@@ -11,9 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Threading;
-using System.Xml.Linq;
 
 namespace MVP_Tema_1
 {
@@ -24,6 +20,7 @@ namespace MVP_Tema_1
     {
         private User currentPlayer;
         private Game currentGame;
+        private Game savedGame;
         private bool stopTimeBar = false;
         private int boardWidth;
         private int boardHeight;
@@ -47,6 +44,8 @@ namespace MVP_Tema_1
                 currentGame = game;
             if (currentGame.CurrentLevel == 1)
                 currentPlayer.PlayedGames++;
+            savedGame = currentGame;
+            workerProgress = currentGame.PastTime;
             PlayerName.Text = currentPlayer.UserName;
             CurrentLevel.Text = "Level " + currentGame.CurrentLevel.ToString() + "/3";
             string filePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(projectDirectory, "Resource\\ProfilePhotos\\" + currentPlayer.Photo));
@@ -57,6 +56,7 @@ namespace MVP_Tema_1
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            stopTimeBar = true;
             MessageBoxResult result = MessageBox.Show("Do you want to save the game?", "Save game", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
@@ -69,22 +69,37 @@ namespace MVP_Tema_1
                     flipedTile = null;
                 }
                 forceClose = false;
-                stopTimeBar = true;
+                currentGame.PastTime = workerProgress;
                 Save(true);
                 MainWindow window = new MainWindow(currentPlayer);
                 window.Show();
                 Close();
             }
+            else
+            {
+                stopTimeBar = false;
+                object workerSender = this;
+                EventArgs workerEvArgs = new EventArgs();
+                Window_ContentRendered(workerSender, workerEvArgs);
+            }
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Do you want to exit the game?", "Close Window", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            stopTimeBar = true;
+            MessageBoxResult result = MessageBox.Show("Do you want to exit the game?\n Unsaved changes will be lost!", "Close Window", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 MainWindow window = new MainWindow(currentPlayer);
                 window.Show();
                 Close();
+            }
+            else
+            {
+                stopTimeBar = false;
+                object workerSender = this;
+                EventArgs workerEvArgs = new EventArgs();
+                Window_ContentRendered(workerSender, workerEvArgs);
             }
         }
 
@@ -277,6 +292,7 @@ namespace MVP_Tema_1
                         {
                             currentPlayer.WinnedGames++;
                             forceClose = false;
+                            DeleteSavedGame();
                             Save(false);
                             MainWindow mainWindow = new MainWindow(currentPlayer);
                             mainWindow.Show();
@@ -325,6 +341,18 @@ namespace MVP_Tema_1
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(fileStream, users);
+            }
+        }
+
+        void DeleteSavedGame()
+        {
+            for (int i = 0 ; i < currentPlayer.SavedGames.Count; i++)
+            {
+                if (currentPlayer.SavedGames[i] == savedGame)
+                {
+                    currentPlayer.SavedGames.RemoveAt(i);
+                    break;
+                }
             }
         }
 

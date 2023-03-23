@@ -9,39 +9,46 @@ namespace MVP_Tema_1
     public partial class GamesSelectionWindow : Window
     {
         private User currentPlayer = null;
+        private bool forceClose = true;
         public GamesSelectionWindow(User player)
         {
             InitializeComponent();
             currentPlayer = player;
             CreateTable();
-            Viewer.ScrollToVerticalOffset(Viewer.VerticalOffset + (Viewer.ViewportHeight * 3));
         }
 
         void CreateTable() 
         {
-            Table.ColumnDefinitions.Add(new ColumnDefinition());
-
+            SavedGamesList.Items.Clear();
             for (int i = 0; i < currentPlayer.SavedGames.Count; i++)
             {
-                Table.RowDefinitions.Add(new RowDefinition());
-
-                Button game = new Button();
+                ListBoxItem game = new ListBoxItem();
                 game.Content = "Game index: " + (i + 1).ToString() + "                Current level: " + currentPlayer.SavedGames[i].CurrentLevel.ToString() + "                Board size: " + currentPlayer.SavedGames[i].CurrentBoard.BoardWidth.ToString() + "x" + currentPlayer.SavedGames[i].CurrentBoard.BoardHeight.ToString();
                 game.HorizontalAlignment = HorizontalAlignment.Center;
                 game.HorizontalContentAlignment = HorizontalAlignment.Center;
-                game.Width = 900;
                 game.FontSize = 30;
-                game.Click += Button_Click;
-
-                Grid.SetRow(game, i);
-                Grid.SetColumn(game, 0);
-                Table.Children.Add(game);
-            }
+                game.MouseDoubleClick += Button_DoubleClick;
+                SavedGamesList.Items.Add(game);
+            }  
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            forceClose = false;
+            int selectedGameIndex = SavedGamesList.SelectedIndex;
+            Game selectedGame = currentPlayer.SavedGames[selectedGameIndex];
+            GameWindow gameWindow = new GameWindow(currentPlayer, selectedGame.CurrentBoard.BoardWidth, selectedGame.CurrentBoard.BoardHeight, selectedGame);
+            gameWindow.Show();
+            Close();
+        }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if(forceClose)
+            {
+                MainWindow mainWindow = new MainWindow(currentPlayer);
+                mainWindow.Show();
+            }
         }
     }
 }
