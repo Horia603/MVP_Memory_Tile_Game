@@ -30,7 +30,8 @@ namespace MVP_Tema_1
         private string projectDirectory = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
         private bool forceClose = true;
         private int workerProgress = 0;
-        public GameWindow(User player, int width, int height, Game game = null)
+        private int savedGameIndex;
+        public GameWindow(User player, int width, int height, Game game = null, int savedGameIndex = -1)
         {
             InitializeComponent();
             WindowStyle = WindowStyle.None;
@@ -38,6 +39,7 @@ namespace MVP_Tema_1
             currentPlayer = player;
             boardWidth = width;
             boardHeight = height;
+            this.savedGameIndex = savedGameIndex;
             if (game == null)
                 currentGame = new Game(1, boardWidth, boardHeight);
             else
@@ -52,6 +54,7 @@ namespace MVP_Tema_1
             PlayerImage.Source = new BitmapImage(new Uri(filePath, UriKind.Absolute));
             DataContext = this;
             CreateTable(boardWidth, boardHeight);
+            this.savedGameIndex = savedGameIndex;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -294,7 +297,7 @@ namespace MVP_Tema_1
                         MessageBox.Show("Level " + currentGame.CurrentLevel.ToString() + " completed", "Level Completed");
                         if (currentGame.CurrentLevel < 3)
                         {
-                            GameWindow gameWindow = new GameWindow(currentPlayer, boardWidth, boardHeight, new Game(++currentGame.CurrentLevel, boardWidth, boardHeight));
+                            GameWindow gameWindow = new GameWindow(currentPlayer, boardWidth, boardHeight, new Game(++currentGame.CurrentLevel, boardWidth, boardHeight), savedGameIndex);
                             gameWindow.Show();
                         }
                         else
@@ -334,7 +337,14 @@ namespace MVP_Tema_1
 
             if(saveGame)
             {
-                currentPlayer.SavedGames.Add(currentGame);
+                if(savedGameIndex == -1)
+                {
+                    currentPlayer.SavedGames.Add(currentGame);
+                }
+                else
+                {
+                    currentPlayer.SavedGames[savedGameIndex] = currentGame;
+                }
             }
             List<User> users = GetUsers();
             for (int i = 0; i < users.Count; i++) 

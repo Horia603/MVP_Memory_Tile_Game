@@ -37,7 +37,7 @@ namespace MVP_Tema_1
             forceClose = false;
             int selectedGameIndex = SavedGamesList.SelectedIndex;
             Game selectedGame = currentPlayer.SavedGames[selectedGameIndex];
-            GameWindow gameWindow = new GameWindow(currentPlayer, selectedGame.CurrentBoard.BoardWidth, selectedGame.CurrentBoard.BoardHeight, selectedGame);
+            GameWindow gameWindow = new GameWindow(currentPlayer, selectedGame.CurrentBoard.BoardWidth, selectedGame.CurrentBoard.BoardHeight, selectedGame, selectedGameIndex);
             gameWindow.Show();
             Close();
         }
